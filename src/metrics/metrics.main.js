@@ -124,7 +124,6 @@ class Metrics extends Component {
                 data: this.state.detail
             })
                 .then(data => {
-                    debugger
                     this.setState({
                         editing: false
                     })
@@ -141,7 +140,6 @@ class Metrics extends Component {
                 data: this.state.detail
             })
                 .then(data => {
-                    debugger
                     this.setState({
                         editing: false
                     })
@@ -154,7 +152,6 @@ class Metrics extends Component {
     }
     _handleChange = (key, data) => {
         let real_data = data.target.value
-        debugger
         switch (key) {
             case 'weight':
                 real_data = parseInt(real_data) || 0;

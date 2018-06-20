@@ -35,7 +35,7 @@ const FatalAttributeDetail = props => {
     return (
         <List>
             {Object.keys(detail)
-                .filter(x => _.includes(['name', 'summary', 'business_category'], x))
+                .filter(x => !_.includes(['id', 'created_at', 'updated_at'], x))
                 .map(key => {
                     return (
                         <ListItem key={key}>
@@ -124,7 +124,6 @@ class FatalAttributes extends Component {
                 data: this.state.detail
             })
                 .then(data => {
-                    debugger
                     this.setState({
                         editing: false
                     })
@@ -141,7 +140,6 @@ class FatalAttributes extends Component {
                 data: this.state.detail
             })
                 .then(data => {
-                    debugger
                     this.setState({
                         editing: false
                     })
@@ -154,10 +152,17 @@ class FatalAttributes extends Component {
     }
     _handleChange = (key, data) => {
 
+        let real_data = data.target.value
+        switch (key) {
+            case 'weight':
+                real_data = parseInt(real_data) || 0;
+                break
+        }
+
         this.setState({
             detail: {
                 ...this.state.detail,
-                ... {[key]: data.target.value}
+                ... {[key]: real_data}
             }
         })
         console.log(data)

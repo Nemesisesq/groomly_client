@@ -24,7 +24,7 @@ const styles = theme => ({
         flexGrow: 1,
     },
     appFrame: {
-        height: 600,
+
         zIndex: 1,
         overflow: 'hidden',
         position: 'relative',

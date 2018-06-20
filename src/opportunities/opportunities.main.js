@@ -124,7 +124,6 @@ class Opportunities extends Component {
                 data: this.state.detail
             })
                 .then(data => {
-                    debugger
                     this.setState({
                         editing: false
                     })
@@ -141,7 +140,6 @@ class Opportunities extends Component {
                 data: this.state.detail
             })
                 .then(data => {
-                    debugger
                     this.setState({
                         editing: false
                     })

@@ -35,7 +35,7 @@ const ReportDetail = props => {
     return (
         <List>
             {Object.keys(detail)
-                .filter(x => _.includes(['name', 'summary', 'business_category'], x))
+                .filter(x => !_.includes(['id', 'created_at', 'updated_at'], x))
                 .map(key => {
                     return (
                         <ListItem key={key}>
@@ -87,7 +87,7 @@ class ProjectReports extends Component {
 
     }
 
-    _newOpp = () => {
+    _newReport = () => {
         this.setState({
             editing: true,
             updating: false
@@ -124,7 +124,6 @@ class ProjectReports extends Component {
                 data: this.state.detail
             })
                 .then(data => {
-                    debugger
                     this.setState({
                         editing: false
                     })
@@ -141,7 +140,6 @@ class ProjectReports extends Component {
                 data: this.state.detail
             })
                 .then(data => {
-                    debugger
                     this.setState({
                         editing: false
                     })
@@ -154,10 +152,22 @@ class ProjectReports extends Component {
     }
     _handleChange = (key, data) => {
 
+        let real_data = data.target.value
+        switch (key) {
+            case 'min_hurdle':
+                real_data = parseInt(real_data) || 0;
+                break
+            case 'max_hurdle':
+                real_data = parseInt(real_data) || 0;
+                break;
+            case 'rank':
+                real_data = parseInt(real_data) || 0;
+        }
+
         this.setState({
             detail: {
                 ...this.state.detail,
-                ... {[key]: data.target.value}
+                ... {[key]: real_data}
             }
         })
         console.log(data)
@@ -181,7 +191,7 @@ class ProjectReports extends Component {
                 <Grid container spacing={24}>
                     <Grid item xs={6}>
                         <ReportList project_reports={this.state.project_reports} select={this._selectDetail}/>
-                        <Button variant="fab" color="primary" aria-label="add" onClick={this._newOpp}>
+                        <Button variant="fab" color="primary" aria-label="add" onClick={this._newReport}>
                             <AddIcon/>
                         </Button>
                     </Grid>
