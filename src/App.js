@@ -14,6 +14,7 @@ import Grid from "@material-ui/core/Grid";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import Home from "./home/home.main";
 import Drawer from '@material-ui/core/Drawer'
+import {RouteWithSubRoutes, routes} from "./routes";
 
 
 const drawerWidth = 240;
@@ -52,26 +53,6 @@ const styles = theme => ({
 });
 
 
-const routes = [
-    {
-        path: "/sandwiches",
-        component: Sandwiches
-    },
-    {
-        path: "/tacos",
-        component: Tacos,
-        routes: [
-            {
-                path: "/tacos/bus",
-                component: Bus
-            },
-            {
-                path: "/tacos/cart",
-                component: Cart
-            }
-        ]
-    }
-];
 
 class App extends Component {
     render() {
@@ -89,7 +70,7 @@ class App extends Component {
                 <Link to="/">
                     <Button>Home</Button>
                 </Link>
-                <Link to="/opps">
+                <Link to="/opportunities">
                     <Button>Opportunities</Button>
                 </Link>
 
@@ -117,8 +98,7 @@ class App extends Component {
                         {drawer}
                         <main className={classes.content}>
                             <div className={classes.toolbar} />
-                            <Route exact path="/" component={Home}/>
-                            <Route path="/opps" component={Opportunities}/>
+                            {routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}
                         </main>
                     </div>
                 </Router>
