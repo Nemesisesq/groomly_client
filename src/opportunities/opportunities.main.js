@@ -1,14 +1,13 @@
 import React, {Component} from 'react'
 import List from '@material-ui/core/List'
-import ListItem from "@material-ui/core/es/ListItem/ListItem";
+import ListItem from "@material-ui/core/ListItem";
 import axios from 'axios'
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/es/Button/Button";
+import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add"
 import SaveIcon from "@material-ui/icons/Save"
 import EditIcon from "@material-ui/icons/Edit"
-import TextField from "@material-ui/core/es/TextField/TextField";
-import {withStyles} from '@material-ui/core/styles';
+import TextField from "@material-ui/core/TextField";
 import _ from 'lodash'
 
 const hostUri = "http://localhost:3000/api";
@@ -176,6 +175,7 @@ class Opportunities extends Component {
             editing: false
         })
     }
+
     render() {
         return (<div>
                 <Grid container spacing={24}>
@@ -194,7 +194,7 @@ class Opportunities extends Component {
 
                         {this.state.editing && (
                             <Button color="secondary" onClick={this._cancelEdit}>
-                               cancel
+                                cancel
                             </Button>
                         )}
 
@@ -221,4 +221,4 @@ const styles = theme => ({
 });
 
 
-export default withStyles(styles)(Opportunities)
+export default Opportunities
