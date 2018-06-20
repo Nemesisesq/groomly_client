@@ -67,12 +67,14 @@ class App extends Component {
                 }}
             >
                 <div className={classes.toolbar} />
-                <Link to="/">
-                    <Button>Home</Button>
-                </Link>
-                <Link to="/opportunities">
-                    <Button>Opportunities</Button>
-                </Link>
+                {routes.map((route, i) => {
+                    return (
+                        <Link to={route.path} key={i}>
+                            <Button>{route.title}</Button>
+                        </Link>
+                    )
+                })}
+
 
             </Drawer>
         );
@@ -91,7 +93,7 @@ class App extends Component {
                         >
                             <Toolbar>
                                 <Typography variant="title" color="inherit" noWrap>
-                                    Permanent drawer
+                                    Get Started Below
                                 </Typography>
                             </Toolbar>
                         </AppBar>
