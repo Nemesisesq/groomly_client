@@ -7,8 +7,7 @@ import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add"
 import SaveIcon from "@material-ui/icons/Save"
 import EditIcon from "@material-ui/icons/Edit"
-import TextField from "@material-ui/core/TextField";
-import _ from 'lodash'
+import OpportunityDetail from "./oportunities.detail";
 
 const hostUri = "http://localhost:3000/api";
 
@@ -30,29 +29,29 @@ const OpportunityList = props => {
     )
 }
 
-const OpportunityDetail = props => {
-    const {detail} = props;
-    return (
-        <List>
-            {Object.keys(detail)
-                .filter(x => _.includes(['name', 'summary', 'business_category'], x))
-                .map(key => {
-                    return (
-                        <ListItem key={key}>
-                            <TextField
-                                id={key}
-                                label={key}
-                                value={detail[key]}
-                                onChange={data => props.handleChange(key, data)}
-                                margin="normal"
-                                disabled={!props.editing}
-                            />
-                        </ListItem>
-                    )
-                })}
-        </List>
-    )
-}
+// const OpportunityDetail = props => {
+//     const {detail} = props;
+//     return (
+//         <List>
+//             {Object.keys(detail)
+//                 .filter(x => _.includes(['name', 'summary', 'business_category'], x))
+//                 .map(key => {
+//                     return (
+//                         <ListItem key={key}>
+//                             <TextField
+//                                 id={key}
+//                                 label={key}
+//                                 value={detail[key]}
+//                                 onChange={data => props.handleChange(key, data)}
+//                                 margin="normal"
+//                                 disabled={!props.editing}
+//                             />
+//                         </ListItem>
+//                     )
+//                 })}
+//         </List>
+//     )
+// }
 
 
 class Opportunities extends Component {
@@ -61,15 +60,28 @@ class Opportunities extends Component {
         super(props);
         this.state = {
             opportunities: [{name: 'hello world', id: 1}, {name: "wornderful", id: 2}],
-            detail: {},
+            detail: {
+                metrics:[],
+                fatal_attributes:[]
+            },
             editing: false,
-            updating: false
+            updating: false,
+            metrics: [],
+            fatalAttributes: []
         }
     }
 
     componentDidMount() {
 
 
+        this._getOpportunities();
+        this._getMetrics();
+        this._getFatalAttributes();
+
+    }
+
+    _getOpportunities() {
+        //TODO eager load metrics
         axios({
             method: "get",
             url: `${hostUri}/opportunities`,
@@ -84,8 +96,42 @@ class Opportunities extends Component {
             .catch(error => {
                 console.log(error)
             })
-
     }
+
+    _getMetrics = () => {
+        axios({
+            method: "get",
+            url: `${hostUri}/metrics`,
+            responseType: "application/json",
+        })
+            .then(data => {
+                this.setState({
+                    metrics: [...data.data]
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    //TODO get fatal attributes
+
+    _getFatalAttributes = () => {
+        axios({
+            method: "get",
+            url: `${hostUri}/fatal_attributes`,
+            responseType: "application/json",
+        })
+            .then(data => {
+                this.setState({
+                    fatalAttributes: [...data.data]
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
 
     _newOpp = () => {
         this.setState({
@@ -109,6 +155,11 @@ class Opportunities extends Component {
 
     _saveDetail = () => {
 // better handling is needed
+
+
+        //TODO Handle the creation of the saving of metrics via the opportunity metric endpoints.
+
+
         if (!this.state.editing) {
             this.setState({
                 editing: true
@@ -150,12 +201,29 @@ class Opportunities extends Component {
 
         }
     }
-    _handleChange = (key, data) => {
 
-        this.setState({
-            detail: {
-                ...this.state.detail,
-                ... {[key]: data.target.value}
+    _handleChange = (key, data) => {
+        this.setState((prevState, props) => {
+            let value = data.target.value;
+
+
+            switch (key) {
+                case "metric":
+                    value = [...prevState.detail.metrics, value];
+                    break;
+                case "fatal_attribute":
+                    value = [...prevState.detail.fatal_attributes, value];
+                    break;
+                default:
+            }
+
+
+
+            return {
+                detail: {
+                    ...this.state.detail,
+                    ... {[key]: value}
+                }
             }
         })
         console.log(data)
@@ -175,6 +243,7 @@ class Opportunities extends Component {
     }
 
     render() {
+        const {fatalAttributes, metrics, editing, detail} = this.state
         return (<div>
                 <Grid container spacing={24}>
                     <Grid item xs={6}>
@@ -184,8 +253,13 @@ class Opportunities extends Component {
                         </Button>
                     </Grid>
                     <Grid item xs={6}>
-                        <OpportunityDetail detail={this.state.detail} handleChange={this._handleChange}
-                                           editing={this.state.editing}/>
+                        <OpportunityDetail
+                            detail={detail}
+                            handleChange={this._handleChange}
+                            editing={editing}
+                            metrics={metrics}
+                            fatal_attributes={fatalAttributes}
+                        />
                         <Button variant="fab" color="default" aria-label="add" onClick={this._saveDetail}>
                             {this.state.editing ? <SaveIcon/> : <EditIcon/>}
                         </Button>

@@ -6,13 +6,8 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import {withStyles} from '@material-ui/core/styles'
-import Opportunities from "./opportunities/opportunities.main";
-import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
-import MenuIcon from '@material-ui/icons/Menu'
-import Grid from "@material-ui/core/Grid";
-import {BrowserRouter as Router, Route, Link} from "react-router-dom";
-import Home from "./home/home.main";
+import {BrowserRouter as Router, Link} from "react-router-dom";
 import Drawer from '@material-ui/core/Drawer'
 import {RouteWithSubRoutes, routes} from "./routes";
 

@@ -69,7 +69,6 @@ class Metrics extends Component {
 
     componentDidMount() {
 
-
         axios({
             method: "get",
             url: `${hostUri}/metrics`,
