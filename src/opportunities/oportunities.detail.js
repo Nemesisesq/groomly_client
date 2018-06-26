@@ -1,112 +1,77 @@
-import _ from "lodash";
 import React, {Component} from 'react'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import TextField from '@material-ui/core/TextField'
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Input from "@material-ui/core/Input";
-import Typography from "@material-ui/core/Typography";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import { withStyles } from '@material-ui/core/styles';
+import SwipeableViews from 'react-swipeable-views';
+import Model from "./opportunities.model";
+import Metrics from "./opportunities.metrics";
+import FatalAttributes from "./opportunities.fatalAttributes";
 
 //TODO List current metrics that are associated with the opportunity
 //TODO List available fatal attributes
 //TODO List current fatal attrabutes that are on the opportunity.
 
-export default class OpportunityDetail extends Component {
+const styles = theme => ({
+    root: {
+        backgroundColor: theme.palette.background.paper,
+        width: 500,
+    },
+});
+
+
+class OpportunityDetail extends Component {
 
     constructor(props) {
         super(props)
 
         this.state = {
+            // value: null,
             metric: {},
             fatalAttribute: {}
         }
     }
 
+    handleTabChange = (event, value) => {
+        this.setState({value});
+    };
+
+    handleTabChangeIndex = index => {
+        this.setState({value: index});
+    };
+
     render() {
-        const {detail, handleChange, editing, metrics, fatal_attributes} = this.props;
-        debugger
+        const { classes, theme } = this.props;
         return (
-            <List>
-                {Object.keys(detail)
-                    .filter(x => _.includes(['name', 'summary', 'business_category'], x))
-                    .map(key => {
-                        return (
-                            <ListItem key={key}>
-                                <TextField
-                                    id={key}
-                                    label={key}
-                                    value={detail[key]}
-                                    onChange={data => handleChange(key, data)}
-                                    margin="normal"
-                                    disabled={!editing}
-                                />
-                            </ListItem>
-                        )
-                    })
-                }
-
-                <Typography>
-                    METRICS
-                </Typography>
-
-
-                {detail.metrics.map((item, index) => {
-                    return (
-                        <ListItem key={index}>
-                            {` ${item.type} | ${item.name} | ${item.weight} |  Value: ${item.value.score}`}
-                        </ListItem>
-                    )
-                })}
-
-                <Typography>
-                    FATAL ATTRIBUTES
-                </Typography>
-
-                {detail.fatal_attributes.map((item, index)=> {
-                    return (
-                        <ListItem key={index}>
-                            {` ${item.name} | ${item.summary}`}
-                        </ListItem>
-                    )
-                })}
-
-
-                <FormControl>
-                    <InputLabel htmlFor="age-helper">Add a Metric</InputLabel>
-                    <Select
-                        value={this.state.metric}
-                        onChange={data => this.handleChange("metrics", data)}
-                        input={<Input name="metric" id="metric-helper"/>}
+            //TODO Add tabs for metrics and Fatal Attributes
+            <div>
+                <div className={classes.root}>
+                    <AppBar position="static" color="default">
+                        <Tabs
+                            value={this.state.value}
+                            onChange={this.handleTabChange}
+                            indicatorColor="primary"
+                            textColor="primary"
+                            fullWidth
+                        >
+                            <Tab label="Opportunity"/>
+                            <Tab label="Metrics"/>
+                            <Tab label="Fatal Attributes"/>
+                        </Tabs>
+                    </AppBar>
+                    <SwipeableViews
+                        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                        index={this.state.value}
+                        onChangeIndex={this.handleTabChangeIndex}
                     >
-                        {metrics.map(item => {
-                            return (
-                                <MenuItem>{item.name}</MenuItem>
-                            )
-                        })}
-                    </Select>
-                    <FormHelperText>Select a Metric to Add</FormHelperText>
-                </FormControl>
-
-                <FormControl>
-                    <InputLabel htmlFor="age-helper">Add a Fatal Attribute</InputLabel>
-                    <Select
-                        value={this.state.fatalAttribute}
-                        onChange={data => this.handleChange("fatal_attribute", data)}
-                        input={<Input name="fatal_attribute" id="fatal_attribute-helper"/>}
-                    >
-                        {fatal_attributes.map(item => {
-                            return (
-                                <MenuItem>{item.name}</MenuItem>
-                            )
-                        })}
-                    </Select>
-                    <FormHelperText>Select a Fatal Attribute to Add</FormHelperText>
-                </FormControl>
-            </List>
+                        <Model {...this.props} dir={theme.direction}/>
+                        <Metrics {...this.props} dir={theme.direction}/>
+                        <FatalAttributes {...this.props} dir={theme.direction}/>
+                    </SwipeableViews>
+                </div>
+            </div>
         )
     }
 }
+
+export default withStyles(styles, { withTheme: true })(OpportunityDetail)

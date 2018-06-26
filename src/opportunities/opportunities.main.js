@@ -134,6 +134,8 @@ class Opportunities extends Component {
 
 
     _newOpp = () => {
+
+        // TODO make sure all new opportunities have all the MEtrics added to them available
         this.setState({
             editing: true,
             updating: false
