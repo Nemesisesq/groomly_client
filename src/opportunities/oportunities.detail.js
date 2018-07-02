@@ -8,9 +8,8 @@ import Model from "./opportunities.model";
 import Metrics from "./opportunities.metrics";
 import FatalAttributes from "./opportunities.fatalAttributes";
 
-//TODO List current metrics that are associated with the opportunity
-//TODO List available fatal attributes
-//TODO List current fatal attrabutes that are on the opportunity.
+//TODO List current metrics that are associated with the opportunity. Needs to be tested
+//TODO List current fatal attrabutes that are on the opportunity. Needs to be tested
 
 const styles = theme => ({
     root: {

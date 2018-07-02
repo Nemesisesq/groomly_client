@@ -61,8 +61,8 @@ class Opportunities extends Component {
         this.state = {
             opportunities: [{name: 'hello world', id: 1}, {name: "wornderful", id: 2}],
             detail: {
-                metrics:[],
-                fatal_attributes:[]
+                metrics: [],
+                fatal_attributes: []
             },
             editing: false,
             updating: false,
@@ -77,11 +77,11 @@ class Opportunities extends Component {
         this._getOpportunities();
         this._getMetrics();
         this._getFatalAttributes();
+        this._getValues()
 
     }
 
     _getOpportunities() {
-        //TODO eager load metrics
         axios({
             method: "get",
             url: `${hostUri}/opportunities`,
@@ -113,8 +113,22 @@ class Opportunities extends Component {
                 console.log(error)
             })
     }
+    _getValues = () => {
+        axios({
+            method: "get",
+            url: `${hostUri}/values`,
+            responseType: "application/json",
+        })
+            .then(data => {
+                this.setState({
+                    values: [...data.data]
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
 
-    //TODO get fatal attributes
 
     _getFatalAttributes = () => {
         axios({
@@ -146,8 +160,19 @@ class Opportunities extends Component {
             responseType: "application/json",
         })
             .then(data => {
+                let d = {...data.data}
+                debugger
+                d.metrics = JSON.parse(
+                    JSON.stringify(
+                        this.state.metrics))
+                    .map(item => {
+                        delete item.id
+                        return item
+                    })
                 this.setState({
-                    detail: {...data.data}
+
+
+                    detail: d
                 })
             })
             .catch(error => {
@@ -204,7 +229,7 @@ class Opportunities extends Component {
         }
     }
 
-    _handleChange = (key, data) => {
+    _handleChange = (key, data, model) => {
         this.setState((prevState, props) => {
             let value = data.target.value;
 
@@ -218,7 +243,6 @@ class Opportunities extends Component {
                     break;
                 default:
             }
-
 
 
             return {
@@ -245,7 +269,7 @@ class Opportunities extends Component {
     }
 
     render() {
-        const {fatalAttributes, metrics, editing, detail} = this.state
+        const {fatalAttributes, metrics, values, editing, detail} = this.state
         return (<div>
                 <Grid container spacing={24}>
                     <Grid item xs={6}>
@@ -260,6 +284,7 @@ class Opportunities extends Component {
                             handleChange={this._handleChange}
                             editing={editing}
                             metrics={metrics}
+                            values={values}
                             fatal_attributes={fatalAttributes}
                         />
                         <Button variant="fab" color="default" aria-label="add" onClick={this._saveDetail}>
