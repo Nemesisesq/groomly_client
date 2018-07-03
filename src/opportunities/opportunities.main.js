@@ -161,7 +161,6 @@ class Opportunities extends Component {
         })
             .then(data => {
                 let d = {...data.data}
-                debugger
                 d.metrics = JSON.parse(
                     JSON.stringify(
                         this.state.metrics))
@@ -229,9 +228,16 @@ class Opportunities extends Component {
         }
     }
 
-    _handleChange = (key, data, model) => {
-        this.setState((prevState, props) => {
+    _handleChange = (key, data, index) => {
             let value = data.target.value;
+        if (key === "value") {
+
+            this.state.detail.metrics[index].value = value
+            this.forceUpdate()
+
+            return
+        }
+        this.setState((prevState, props) => {
 
 
             switch (key) {
@@ -239,7 +245,8 @@ class Opportunities extends Component {
                     value = [...prevState.detail.metrics, value];
                     break;
                 case "fatal_attribute":
-                    value = [...prevState.detail.fatal_attributes, value];
+                    debugger
+                    value = [...(prevState.detail.fatal_attributes || []), value];
                     break;
                 default:
             }

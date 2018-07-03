@@ -27,15 +27,15 @@ export default class FatalAttributes extends Component {
 
 
                 <FormControl>
-                    <InputLabel htmlFor="age-helper">Add a Fatal Attribute</InputLabel>
+                    <InputLabel htmlFor="age-helper">this.stateAdd a Fatal Attribute</InputLabel>
                     <Select
-                        value={this.state.fatalAttribute}
+                        value={this.state.fatalAttribute.name}
                         onChange={data => handleChange("fatal_attribute", data)}
                         input={<Input name="fatal_attribute" id="fatal_attribute-helper"/>}
                     >
-                        {fatal_attributes.map(item => {
+                        {fatal_attributes.map(item2 => {
                             return (
-                                <MenuItem>{item.name}</MenuItem>
+                                <MenuItem value={item2}>{item2.name}</MenuItem>
                             )
                         })}
                     </Select>

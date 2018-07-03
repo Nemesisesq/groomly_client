@@ -15,7 +15,6 @@ export default class Metrics extends Component {
     state = {}
 
     render() {
-        debugger
         const {detail, handleChange, values, editing, metrics} = this.props;
 
         const dm = detail.metrics || []
@@ -44,17 +43,20 @@ export default class Metrics extends Component {
                                         <FormControl>
                                         <InputLabel htmlFor="age-helper">Add a value</InputLabel>
                                         <Select
-                                            value={this.state.fatalAttribute}
-                                            onChange={data => handleChange("value", data, item)}
-                                            input={<Input name="fatal_attribute" id="fatal_attribute-helper"/>}
+                                            value={item.value.name}
+                                            onChange={data => {
+
+                                                handleChange("value", data, index)
+                                            }}
+                                            input={<Input name="value" id="value-helper"/>}
                                         >
-                                            {values.map(item => {
+                                            {values.map(item2 => {
                                                 return (
-                                                    <MenuItem>{item.name}</MenuItem>
+                                                    <MenuItem value={item2}>{item2.name}</MenuItem>
                                                 )
                                             })}
                                         </Select>
-                                        <FormHelperText>Select a Fatal Attribute to Add</FormHelperText>
+                                        <FormHelperText>Select a Value</FormHelperText>
                                     </FormControl>
                                     </Grid>
 
