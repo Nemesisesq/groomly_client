@@ -161,22 +161,25 @@ class Opportunities extends Component {
         })
             .then(data => {
                 let d = {...data.data}
-                d.metrics = JSON.parse(
-                    JSON.stringify(
-                        this.state.metrics))
-                    .map(item => {
-                        delete item.id
-                        return item
-                    })
-                this.setState({
-
-
-                    detail: d
-                })
+                this._addMetricsToNewOpportunity(d);
             })
             .catch(error => {
                 console.log(error)
             })
+    }
+
+    _addMetricsToNewOpportunity(d) {
+        d.metric_values = JSON.parse(
+            JSON.stringify(
+                this.state.metrics))
+            .map(item => {
+                delete item.id
+                return {"metric":item, "value": null}
+            })
+
+        this.setState({
+            detail: d
+        })
     }
 
     _saveDetail = () => {
@@ -232,7 +235,15 @@ class Opportunities extends Component {
             let value = data.target.value;
         if (key === "value") {
 
-            this.state.detail.metrics[index].value = value
+            this.state.detail.metric_values[index].value = value
+            this.forceUpdate()
+
+            return
+        }
+
+
+        if (key === "metric.value") {
+            this.state.detail.metric_values[index].weight = value
             this.forceUpdate()
 
             return

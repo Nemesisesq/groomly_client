@@ -8,6 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Input from "@material-ui/core/Input";
 import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
 
 const value_type= {1: 'Value', 2:'Effort'}
 
@@ -17,40 +18,42 @@ export default class Metrics extends Component {
     render() {
         const {detail, handleChange, values, editing, metrics} = this.props;
 
+
         const dm = detail.metrics || []
         return (
             <div>
                 <List>
                     {dm.map((item, index) => {
+                        const {metric, value} = item
                         return (
                             <ListItem key={index}>
                                 <Grid container spacing={24}>
 
                                     <Grid item xs={12}>
-                                        <div> Type: {value_type[item.type]}</div>
+                                        <div> Type: {value_type[metric.type]}</div>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <div> Name: {item.name}</div>
+                                        <div> Name: {metric.name}</div>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <div> Weight: {item.weight}</div>
+                                        <div> Weight: {metric.weight}</div>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <div> Value: {item.value.score}</div>
+                                        <div> Value: {metric.value.score}</div>
                                     </Grid>
 
                                     <Grid item xs={12}>
                                         <FormControl>
                                         <InputLabel htmlFor="age-helper">Add a value</InputLabel>
                                         <Select
-                                            value={item.value.name}
+                                            value={value}
                                             onChange={data => {
 
                                                 handleChange("value", data, index)
                                             }}
                                             input={<Input name="value" id="value-helper"/>}
                                         >
-                                            {values.map(item2 => {
+                                            {metric.choices.map(item2 => {
                                                 return (
                                                     <MenuItem value={item2}>{item2.name}</MenuItem>
                                                 )

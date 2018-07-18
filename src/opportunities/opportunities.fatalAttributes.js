@@ -10,7 +10,7 @@ import Input from "@material-ui/core/Input";
 
 export default class FatalAttributes extends Component {
     state = {
-
+            fatalAttribute:{}
     }
     render() {
         const {detail, handleChange, editing, fatal_attributes} = this.props;
@@ -29,13 +29,13 @@ export default class FatalAttributes extends Component {
                 <FormControl>
                     <InputLabel htmlFor="age-helper">this.stateAdd a Fatal Attribute</InputLabel>
                     <Select
-                        value={this.state.fatalAttribute.name}
+                        value={this.state.fatalAttribute.name || "Choose One"}
                         onChange={data => handleChange("fatal_attribute", data)}
                         input={<Input name="fatal_attribute" id="fatal_attribute-helper"/>}
                     >
-                        {fatal_attributes.map(item2 => {
+                        {fatal_attributes.map((item2, index) => {
                             return (
-                                <MenuItem value={item2}>{item2.name}</MenuItem>
+                                <MenuItem value={item2} key={index}>{item2.name}</MenuItem>
                             )
                         })}
                     </Select>
