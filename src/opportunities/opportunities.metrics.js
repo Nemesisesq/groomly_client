@@ -14,16 +14,16 @@ const value_type= {1: 'Value', 2:'Effort'}
 
 export default class Metrics extends Component {
     state = {}
-
     render() {
         const {detail, handleChange, values, editing, metrics} = this.props;
 
 
-        const dm = detail.metrics || []
+        const dm = detail.metric_values || []
         return (
             <div>
                 <List>
                     {dm.map((item, index) => {
+                        debugger
                         const {metric, value} = item
                         return (
                             <ListItem key={index}>
@@ -39,7 +39,7 @@ export default class Metrics extends Component {
                                         <div> Weight: {metric.weight}</div>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <div> Value: {metric.value.score}</div>
+                                        <div> Value: {value.score}</div>
                                     </Grid>
 
                                     <Grid item xs={12}>
@@ -53,9 +53,10 @@ export default class Metrics extends Component {
                                             }}
                                             input={<Input name="value" id="value-helper"/>}
                                         >
-                                            {metric.choices.map(item2 => {
+                                            {metric.choices.map((item2, index) => {
+
                                                 return (
-                                                    <MenuItem value={item2}>{item2.name}</MenuItem>
+                                                    <MenuItem key={index} value={item2}>{item2.name}</MenuItem>
                                                 )
                                             })}
                                         </Select>

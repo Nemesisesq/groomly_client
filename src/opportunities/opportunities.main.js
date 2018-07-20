@@ -67,7 +67,8 @@ class Opportunities extends Component {
             editing: false,
             updating: false,
             metrics: [],
-            fatalAttributes: []
+            fatalAttributes: [],
+            new_value: {}
         }
     }
 
@@ -78,6 +79,7 @@ class Opportunities extends Component {
         this._getMetrics();
         this._getFatalAttributes();
         this._getValues()
+        this._getNewValue()
 
     }
 
@@ -116,12 +118,28 @@ class Opportunities extends Component {
     _getValues = () => {
         axios({
             method: "get",
-            url: `${hostUri}/values`,
+            url: `${hostUri}/values/new`,
             responseType: "application/json",
         })
             .then(data => {
                 this.setState({
                     values: [...data.data]
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    _getNewValue = () => {
+        axios({
+            method: "get",
+            url: `${hostUri}/values`,
+            responseType: "application/json",
+        })
+            .then(data => {
+                this.setState({
+                    new_value: [...data.data]
                 })
             })
             .catch(error => {
@@ -168,13 +186,12 @@ class Opportunities extends Component {
             })
     }
 
-    _addMetricsToNewOpportunity(d) {
+    _addMetricsToNewOpportunity = (d) => {
         d.metric_values = JSON.parse(
             JSON.stringify(
                 this.state.metrics))
             .map(item => {
-                delete item.id
-                return {"metric":item, "value": null}
+                return {"metric": item, "value": this.state.new_value}
             })
 
         this.setState({
@@ -232,7 +249,7 @@ class Opportunities extends Component {
     }
 
     _handleChange = (key, data, index) => {
-            let value = data.target.value;
+        let value = data.target.value;
         if (key === "value") {
 
             this.state.detail.metric_values[index].value = value
@@ -274,10 +291,23 @@ class Opportunities extends Component {
     }
 
     _selectDetail = item => {
-        this.setState({
-            detail: item,
-            updating: true
+
+        axios({
+            method: "get",
+            url: `${hostUri}/opportunities/${item.id}`,
+            responseType: "application/json",
         })
+            .then(data => {
+                debugger
+                this.setState({
+                    detail: {...data.data},
+                    updating: true
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
     }
 
     _cancelEdit = _ => {
