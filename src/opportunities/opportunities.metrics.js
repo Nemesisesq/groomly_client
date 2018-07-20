@@ -9,6 +9,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Input from "@material-ui/core/Input";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import _ from 'lodash'
 
 const value_type= {1: 'Value', 2:'Effort'}
 
@@ -17,13 +18,11 @@ export default class Metrics extends Component {
     render() {
         const {detail, handleChange, values, editing, metrics} = this.props;
 
-
         const dm = detail.metric_values || []
         return (
             <div>
                 <List>
                     {dm.map((item, index) => {
-                        debugger
                         const {metric, value} = item
                         return (
                             <ListItem key={index}>
@@ -44,14 +43,14 @@ export default class Metrics extends Component {
 
                                     <Grid item xs={12}>
                                         <FormControl>
-                                        <InputLabel htmlFor="age-helper">Add a value</InputLabel>
+                                        <InputLabel htmlFor="value-helper">Add a value</InputLabel>
                                         <Select
-                                            value={value}
+                                            value={this._value(metric, value)}
                                             onChange={data => {
 
                                                 handleChange("value", data, index)
                                             }}
-                                            input={<Input name="value" id="value-helper"/>}
+
                                         >
                                             {metric.choices.map((item2, index) => {
 
@@ -71,5 +70,11 @@ export default class Metrics extends Component {
                 </List>
             </div>
         )
+    }
+
+    _value(metric, value) {
+debugger
+         let v = _.find(metric.choices, value)
+        return v || "";
     }
 }

@@ -22,6 +22,12 @@ export const routes = [
 
     },
     {
+        title: 'Opportunity',
+        path: "/opportunity/{id}",
+        component: Opportunities,
+
+    },
+    {
         title: 'metrics',
         path: "/metrics",
         component: Metrics

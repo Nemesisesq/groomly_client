@@ -1,6 +1,4 @@
 import React, {Component} from 'react'
-import List from '@material-ui/core/List'
-import ListItem from "@material-ui/core/ListItem";
 import axios from 'axios'
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -8,26 +6,11 @@ import AddIcon from "@material-ui/icons/Add"
 import SaveIcon from "@material-ui/icons/Save"
 import EditIcon from "@material-ui/icons/Edit"
 import OpportunityDetail from "./oportunities.detail";
+import OpportunityList from "./opportunities.list"
 
 const hostUri = "http://localhost:3000/api";
 
-const OpportunityList = props => {
-    const {select, opportunities} = props
 
-    return (
-        <List>
-            {opportunities.map(item => {
-                return (
-                    <ListItem button onClick={_ => select(item)} key={item.id}>
-                        {item.name}
-                        |
-                        {item.summary}
-                    </ListItem>
-                )
-            })}
-        </List>
-    )
-}
 
 // const OpportunityDetail = props => {
 //     const {detail} = props;
@@ -249,6 +232,7 @@ class Opportunities extends Component {
     }
 
     _handleChange = (key, data, index) => {
+        debugger
         let value = data.target.value;
         if (key === "value") {
 
@@ -273,7 +257,6 @@ class Opportunities extends Component {
                     value = [...prevState.detail.metrics, value];
                     break;
                 case "fatal_attribute":
-                    debugger
                     value = [...(prevState.detail.fatal_attributes || []), value];
                     break;
                 default:
@@ -290,15 +273,14 @@ class Opportunities extends Component {
         console.log(data)
     }
 
-    _selectDetail = item => {
-
+    _selectDetail = (event, id ) => {
+debugger
         axios({
             method: "get",
-            url: `${hostUri}/opportunities/${item.id}`,
+            url: `${hostUri}/opportunities/${id}`,
             responseType: "application/json",
         })
             .then(data => {
-                debugger
                 this.setState({
                     detail: {...data.data},
                     updating: true
@@ -320,7 +302,7 @@ class Opportunities extends Component {
         const {fatalAttributes, metrics, values, editing, detail} = this.state
         return (<div>
                 <Grid container spacing={24}>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <OpportunityList opportunities={this.state.opportunities} select={this._selectDetail}/>
                         <Button variant="fab" color="primary" aria-label="add" onClick={this._newOpp}>
                             <AddIcon/>
