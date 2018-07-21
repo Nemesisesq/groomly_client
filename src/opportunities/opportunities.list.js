@@ -26,7 +26,8 @@ const OpportunityList = props => {
         "name",
         "summary",
         "business_category",
-        "score"
+        "value_score",
+        "effort_score"
     ]
     return (
         <Paper className={classes.root}>
@@ -48,6 +49,7 @@ const OpportunityList = props => {
                                 }}
                             >
                                 {keys.map((key, index) => {
+                                    debugger
                                     return <TableCell key={index}>{n[key]}</TableCell>
                                 })}
                             </TableRow>

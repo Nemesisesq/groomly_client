@@ -47,7 +47,7 @@ class Opportunities extends Component {
                 metrics: [],
                 fatal_attributes: []
             },
-            editing: false,
+            editing: true,
             updating: false,
             metrics: [],
             fatalAttributes: [],
@@ -74,6 +74,7 @@ class Opportunities extends Component {
         })
             .then(data => {
 
+                    debugger
                 this.setState({
                     opportunities: [...data.data]
                 })
@@ -204,13 +205,16 @@ class Opportunities extends Component {
                 data: this.state.detail
             })
                 .then(data => {
+                    this._getOpportunities()
                     this.setState({
                         editing: false
                     })
+
                 })
                 .catch(error => {
                     console.log(error)
                 })
+
         } else {
 
             axios({
@@ -220,6 +224,7 @@ class Opportunities extends Component {
                 data: this.state.detail
             })
                 .then(data => {
+                    this._getOpportunities()
                     this.setState({
                         editing: false
                     })
@@ -229,6 +234,8 @@ class Opportunities extends Component {
                 })
 
         }
+
+
     }
 
     _handleChange = (key, data, index) => {
@@ -292,7 +299,7 @@ class Opportunities extends Component {
 
     _cancelEdit = _ => {
         this.setState({
-            editing: false
+            editing: true
         })
     }
 
@@ -301,7 +308,7 @@ class Opportunities extends Component {
         return (<div>
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
-                        <OpportunityList opportunities={this.state.opportunities} select={this._selectDetail}/>
+                        <OpportunityList opportunities={this.state.opportunities} select={this._selectDetail} />
                         <Button variant="fab" color="primary" aria-label="add" onClick={this._newOpp}>
                             <AddIcon/>
                         </Button>
@@ -310,20 +317,13 @@ class Opportunities extends Component {
                         <OpportunityDetail
                             detail={detail}
                             handleChange={this._handleChange}
-                            editing={editing}
                             metrics={metrics}
                             values={values}
                             fatal_attributes={fatalAttributes}
                         />
                         <Button variant="fab" color="default" aria-label="add" onClick={this._saveDetail}>
-                            {this.state.editing ? <SaveIcon/> : <EditIcon/>}
+                            {<SaveIcon/>}
                         </Button>
-
-                        {this.state.editing && (
-                            <Button color="secondary" onClick={this._cancelEdit}>
-                                cancel
-                            </Button>
-                        )}
 
                     </Grid>
                 </Grid>

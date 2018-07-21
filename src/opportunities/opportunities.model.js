@@ -23,7 +23,6 @@ export default class Model extends Component {
                                     value={detail[key]}
                                     onChange={data => handleChange(key, data)}
                                     margin="normal"
-                                    disabled={!editing}
                                 />
                             </ListItem>
                         )
