@@ -232,7 +232,6 @@ class Opportunities extends Component {
     }
 
     _handleChange = (key, data, index) => {
-        debugger
         let value = data.target.value;
         if (key === "value") {
 
@@ -274,7 +273,6 @@ class Opportunities extends Component {
     }
 
     _selectDetail = (event, id ) => {
-debugger
         axios({
             method: "get",
             url: `${hostUri}/opportunities/${id}`,

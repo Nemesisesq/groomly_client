@@ -73,7 +73,6 @@ export default class Metrics extends Component {
     }
 
     _value(metric, value) {
-debugger
          let v = _.find(metric.choices, value)
         return v || "";
     }
