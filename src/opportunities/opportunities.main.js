@@ -8,12 +8,7 @@ import EditIcon from "@material-ui/icons/Edit"
 import OpportunityDetail from "./oportunities.detail";
 import OpportunityList from "./opportunities.list"
 
-let hostUri
-if (location.host.match(/localhost/)) {
-     hostUri = "http://localhost:3000/api";
-} else {
-    hostUri = "https://groomly.herokuapp.com/api";
-}
+var hostUri
 
 
 // const OpportunityDetail = props => {
@@ -43,6 +38,8 @@ if (location.host.match(/localhost/)) {
 
 class Opportunities extends Component {
 
+    hostUri = ""
+
     constructor(props) {
         super(props);
         this.state = {
@@ -60,6 +57,14 @@ class Opportunities extends Component {
     }
 
     componentDidMount() {
+
+
+
+        if (location.host.match(/localhost/)) {
+            hostUri = "http://localhost:3000/api";
+        } else {
+            hostUri = "https://groomly.herokuapp.com/api";
+        }
 
 
         this._getOpportunities();
