@@ -8,8 +8,12 @@ import EditIcon from "@material-ui/icons/Edit"
 import OpportunityDetail from "./oportunities.detail";
 import OpportunityList from "./opportunities.list"
 
-const hostUri = "http://localhost:3000/api";
-
+let hostUri
+if (location.host.match(/localhost/)) {
+     hostUri = "http://localhost:3000/api";
+} else {
+    hostUri = "https://groomly.herokuapp.com/api";
+}
 
 
 // const OpportunityDetail = props => {
@@ -74,7 +78,7 @@ class Opportunities extends Component {
         })
             .then(data => {
 
-                    debugger
+                debugger
                 this.setState({
                     opportunities: [...data.data]
                 })
@@ -279,7 +283,7 @@ class Opportunities extends Component {
         console.log(data)
     }
 
-    _selectDetail = (event, id ) => {
+    _selectDetail = (event, id) => {
         axios({
             method: "get",
             url: `${hostUri}/opportunities/${id}`,
@@ -308,7 +312,7 @@ class Opportunities extends Component {
         return (<div>
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
-                        <OpportunityList opportunities={this.state.opportunities} select={this._selectDetail} />
+                        <OpportunityList opportunities={this.state.opportunities} select={this._selectDetail}/>
                         <Button variant="fab" color="primary" aria-label="add" onClick={this._newOpp}>
                             <AddIcon/>
                         </Button>
