@@ -7,8 +7,7 @@ import SaveIcon from "@material-ui/icons/Save"
 import EditIcon from "@material-ui/icons/Edit"
 import OpportunityDetail from "./oportunities.detail";
 import OpportunityList from "./opportunities.list"
-
-var hostUri
+import {h as hostUri} from "../config"
 
 
 // const OpportunityDetail = props => {
@@ -38,7 +37,6 @@ var hostUri
 
 class Opportunities extends Component {
 
-    hostUri = ""
 
     constructor(props) {
         super(props);
@@ -60,11 +58,11 @@ class Opportunities extends Component {
 
 
         //eslint-disable-next-line
-        if (location.host.match(/localhost/)) {
-            hostUri = "http://localhost:3000/api";
-        } else {
-            hostUri = "https://groomly.herokuapp.com/api";
-        }
+        // if (location.host.match(/localhost/)) {
+        //     hostUri = "http://localhost:3000/api";
+        // } else {
+        //     hostUri = "https://groomly.herokuapp.com/api";
+
 
 
         this._getOpportunities();

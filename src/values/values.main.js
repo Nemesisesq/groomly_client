@@ -10,7 +10,7 @@ import EditIcon from "@material-ui/icons/Edit"
 import TextField from "@material-ui/core/TextField";
 import _ from 'lodash'
 
-const hostUri = "http://localhost:3000/api";
+import {h as hostUri} from "../config"
 
 const ValuesList = props => {
     const {select, values} = props
