@@ -57,7 +57,6 @@ class Opportunities extends Component {
     componentDidMount() {
 
 
-        //eslint-disable-next-line
         // if (location.host.match(/localhost/)) {
         //     hostUri = "http://localhost:3000/api";
         // } else {
