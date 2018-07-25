@@ -261,7 +261,6 @@ class OpportunityDetail extends Component {
         return (
             //TODO Add tabs for metrics and Fatal Attributes
             <div>
-            {this.props.detail_id}
                 <Button variant="fab" color="default" aria-label="add" onClick={this._saveDetail}>
                     {<SaveIcon/>}
                 </Button>
