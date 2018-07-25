@@ -16,12 +16,10 @@ export default class FatalAttributes extends Component {
     render() {
         const {detail, handleChange, editing, fatal_attributes} = this.props;
         const fa = detail.fatal_attributes || [];
-        debugger
         return (
             <div>
                 <List>
                     {fa.map((item, index) => {
-                        debugger
                         return (
                             <ListItem key={index}>
                                 {` ${item.name} | ${item.summary}`}
