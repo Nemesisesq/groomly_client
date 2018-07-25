@@ -261,7 +261,7 @@ class Opportunities extends Component {
         const { match, location, history, setDetail } = this.props
 
         setDetail(id)
-        history.push('/opportunity/' + 'new')
+        history.push(`/opportunity/${id}`)
 
         // axios({
         //     method: "get",
