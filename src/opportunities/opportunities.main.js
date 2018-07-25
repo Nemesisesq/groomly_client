@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add"
 import SaveIcon from "@material-ui/icons/Save"
 import EditIcon from "@material-ui/icons/Edit"
-import OpportunityDetail from "./oportunities.detail";
+import OpportunityDetail from "./opportunities.detail";
 import OpportunityList from "./opportunities.list"
 import {h as hostUri} from "../config"
 
@@ -61,7 +61,6 @@ class Opportunities extends Component {
         //     hostUri = "http://localhost:3000/api";
         // } else {
         //     hostUri = "https://groomly.herokuapp.com/api";
-
 
 
         this._getOpportunities();
@@ -157,23 +156,30 @@ class Opportunities extends Component {
 
     _newOpp = () => {
 
+        const {navigation} = this.props
+
+        navigation.navigate('Opportunity', {id: 'new'})
         // TODO make sure all new opportunities have all the MEtrics added to them available
-        this.setState({
-            editing: true,
-            updating: false
-        })
-        axios({
-            method: "get",
-            url: `${hostUri}/opportunities/new`,
-            responseType: "application/json",
-        })
-            .then(data => {
-                let d = {...data.data}
-                this._addMetricsToNewOpportunity(d);
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        // this.setState({
+        //     editing: true,
+        //     updating: false
+        // })
+        // axios({
+        //     method: "get",
+        //     url: `${hostUri}/opportunities/new`,
+        //     responseType: "application/json",
+        // })
+        //     .then(data => {
+        //         let d = {...data.data}
+        //         this._addMetricsToNewOpportunity(d);
+        //         this.setState({
+        //             detail: d
+        //         })
+        //
+        //     })
+        //     .catch(error => {
+        //         console.log(error)
+        //     })
     }
 
     _addMetricsToNewOpportunity = (d) => {
@@ -184,9 +190,7 @@ class Opportunities extends Component {
                 return {"metric": item, "value": this.state.new_value}
             })
 
-        this.setState({
-            detail: d
-        })
+
     }
 
     _saveDetail = () => {
@@ -286,20 +290,25 @@ class Opportunities extends Component {
     }
 
     _selectDetail = (event, id) => {
-        axios({
-            method: "get",
-            url: `${hostUri}/opportunities/${id}`,
-            responseType: "application/json",
-        })
-            .then(data => {
-                this.setState({
-                    detail: {...data.data},
-                    updating: true
-                })
-            })
-            .catch(error => {
-                console.log(error)
-            })
+
+        const {navigation} = this.props
+
+        navigation.navigate('Opportunity', {id: id})
+
+        // axios({
+        //     method: "get",
+        //     url: `${hostUri}/opportunities/${id}`,
+        //     responseType: "application/json",
+        // })
+        //     .then(data => {
+        //         this.setState({
+        //             detail: {...data.data},
+        //             updating: true
+        //         })
+        //     })
+        //     .catch(error => {
+        //         console.log(error)
+        //     })
 
     }
 
@@ -312,25 +321,12 @@ class Opportunities extends Component {
     render() {
         const {fatalAttributes, metrics, values, editing, detail} = this.state
         return (<div>
-                <Grid container spacing={24}>
-                    <Grid item xs={12}>
-                        <OpportunityList opportunities={this.state.opportunities} select={this._selectDetail}/>
                         <Button variant="fab" color="primary" aria-label="add" onClick={this._newOpp}>
                             <AddIcon/>
                         </Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <OpportunityDetail
-                            detail={detail}
-                            handleChange={this._handleChange}
-                            metrics={metrics}
-                            values={values}
-                            fatal_attributes={fatalAttributes}
-                        />
-                        <Button variant="fab" color="default" aria-label="add" onClick={this._saveDetail}>
-                            {<SaveIcon/>}
-                        </Button>
-
+                <Grid container spacing={24}>
+                    <Grid item xs={12}>
+                        <OpportunityList opportunities={this.state.opportunities} select={this._selectDetail}/>
                     </Grid>
                 </Grid>
             </div>

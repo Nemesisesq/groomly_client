@@ -1,6 +1,6 @@
 const hostUri = () => {
     if (window.location.host.match(/localhost/)) {
-        return "http://localhost:3000/api";
+        return "http://localhost:3001/api";
     } else {
         return "https://groomly-server.herokuapp.com/api";
     }
