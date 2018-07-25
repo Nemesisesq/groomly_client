@@ -266,12 +266,12 @@ class OpportunityDetail extends Component {
                 </Button>
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
-                        <div>Opportunity</div>
+                        <h2>Opportunity</h2>
                         <Model handleChange = {this._handleChange}  detail={this.state.detail} dir={theme.direction}/>
 
-                        <div>Metrics</div>
+                        <h2>Metrics</h2>
                         <Metrics handleChange = {this._handleChange} detail={this.state.detail} dir={theme.direction}/>
-                        <div>Fatal Attributes</div>
+                        <h2>Fatal Attributes</h2>
                         <FatalAttributes handleChange = {this._handleChange}  detail={this.state.detail} {...this.state} fatal_attributes={fatal_attributes}/>
 
                     </Grid>

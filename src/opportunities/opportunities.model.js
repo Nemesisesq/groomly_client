@@ -3,6 +3,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import TextField from '@material-ui/core/TextField'
 import _ from 'lodash'
+import Grid from "@material-ui/core/Grid";
 export default class Model extends Component {
 
     state = {
@@ -11,12 +12,12 @@ export default class Model extends Component {
     render(){
         const {detail, handleChange, editing} = this.props;
         return (
-            <List>
+            <Grid container spacing={16}>
                 {Object.keys(detail)
                     .filter(x => _.includes(['name', 'summary', 'business_category'], x))
                     .map(key => {
                         return (
-                            <ListItem key={key}>
+                            <Grid item key={key}>
                                 <TextField
                                     id={key}
                                     label={key}
@@ -24,12 +25,12 @@ export default class Model extends Component {
                                     onChange={data => handleChange(key, data)}
                                     margin="normal"
                                 />
-                            </ListItem>
+                            </Grid>
                         )
                     })
                 }
 
-            </List>
+            </Grid>
         )
     }
 
