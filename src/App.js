@@ -63,6 +63,7 @@ class App extends Component {
             >
                 <div className={classes.toolbar} />
                 {routes.map((route, i) => {
+                   route.path = route.path.replace(":id", "new")
                     return (
                         <Link to={route.path} key={i}>
                             <Button>{route.title}</Button>

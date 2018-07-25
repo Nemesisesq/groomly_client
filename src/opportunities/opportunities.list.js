@@ -49,7 +49,6 @@ const OpportunityList = props => {
                                 }}
                             >
                                 {keys.map((key, index) => {
-                                    debugger
                                     return <TableCell key={index}>{n[key]}</TableCell>
                                 })}
                             </TableRow>

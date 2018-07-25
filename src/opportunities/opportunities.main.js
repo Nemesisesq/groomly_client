@@ -8,6 +8,9 @@ import EditIcon from "@material-ui/icons/Edit"
 import OpportunityDetail from "./opportunities.detail";
 import OpportunityList from "./opportunities.list"
 import {h as hostUri} from "../config"
+import {withRouter} from "react-router";
+import {connect} from "react-redux";
+import {setDetail} from "../ducks/ducks.opportunity";
 
 
 // const OpportunityDetail = props => {
@@ -79,7 +82,6 @@ class Opportunities extends Component {
         })
             .then(data => {
 
-                debugger
                 this.setState({
                     opportunities: [...data.data]
                 })
@@ -155,48 +157,13 @@ class Opportunities extends Component {
 
 
     _newOpp = () => {
-
-        const {navigation} = this.props
-
-        navigation.navigate('Opportunity', {id: 'new'})
-        // TODO make sure all new opportunities have all the MEtrics added to them available
-        // this.setState({
-        //     editing: true,
-        //     updating: false
-        // })
-        // axios({
-        //     method: "get",
-        //     url: `${hostUri}/opportunities/new`,
-        //     responseType: "application/json",
-        // })
-        //     .then(data => {
-        //         let d = {...data.data}
-        //         this._addMetricsToNewOpportunity(d);
-        //         this.setState({
-        //             detail: d
-        //         })
-        //
-        //     })
-        //     .catch(error => {
-        //         console.log(error)
-        //     })
-    }
-
-    _addMetricsToNewOpportunity = (d) => {
-        d.metric_values = JSON.parse(
-            JSON.stringify(
-                this.state.metrics))
-            .map(item => {
-                return {"metric": item, "value": this.state.new_value}
-            })
-
-
+        const { match, location, history, setDetail } = this.props
+        setDetail('new')
+        history.push('/opportunity/new')
     }
 
     _saveDetail = () => {
 // better handling is needed
-
-
         //TODO Handle the creation of the saving of metrics via the opportunity metric endpoints.
 
 
@@ -291,9 +258,10 @@ class Opportunities extends Component {
 
     _selectDetail = (event, id) => {
 
-        const {navigation} = this.props
+        const { match, location, history, setDetail } = this.props
 
-        navigation.navigate('Opportunity', {id: id})
+        setDetail(id)
+        history.push(`/opportunity/${id}`)
 
         // axios({
         //     method: "get",
@@ -318,6 +286,9 @@ class Opportunities extends Component {
         })
     }
 
+
+    componentWillUnmount(){
+    }
     render() {
         const {fatalAttributes, metrics, values, editing, detail} = this.state
         return (<div>
@@ -349,5 +320,9 @@ const styles = theme => ({
     },
 });
 
-
-export default Opportunities
+const mapStateToProps = state => {
+    return {
+        detail_id: state.opportunities.detail_id
+    }
+}
+export default withRouter(connect(mapStateToProps,{setDetail})(Opportunities))

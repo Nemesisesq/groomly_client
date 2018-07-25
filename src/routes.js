@@ -13,8 +13,6 @@ export const routes = [
         title: 'Home',
         path: "/",
         component: Home,
-
-
     },
     {
         title: 'Opportunities',
@@ -24,7 +22,7 @@ export const routes = [
     },
     {
         title: 'Opportunity',
-        path: "/opportunity/{id}",
+        path: "/opportunity/:id",
         component: OpportunityDetail,
         show:false
 

@@ -12,6 +12,9 @@ import axios from "axios/index";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save"
 import Grid from "@material-ui/core/Grid";
+import {connect} from "react-redux";
+import {setDetail} from "../ducks/ducks.opportunity";
+import _ from 'lodash'
 
 
 //TODO List current metrics that are associated with the opportunity. Needs to be tested
@@ -35,9 +38,40 @@ class OpportunityDetail extends Component {
                 fatal_attributes: []
             },
             // value: null,
-            metric: {},
-            fatalAttribute: {}
+            metrics: [],
+            fatal_attributes: []
         }
+    }
+
+    _getFatalAttributes = () => {
+        axios({
+            method: "get",
+            url: `${hostUri}/fatal_attributes`,
+            responseType: "application/json",
+        })
+            .then(data => {
+                this.setState({
+                    fatal_attributes: [...data.data]
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+    _getMetrics = () => {
+        axios({
+            method: "get",
+            url: `${hostUri}/metrics`,
+            responseType: "application/json",
+        })
+            .then(data => {
+                this.setState({
+                    metrics: [...data.data]
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     handleTabChange = (event, value) => {
@@ -62,32 +96,31 @@ class OpportunityDetail extends Component {
         })
             .then(data => {
                 let d = {...data.data}
-                this._addMetricsToNewOpportunity(d);
                 this.setState({
                     detail: d
                 })
+                // this._addMetricsToNewOpportunity(d);
 
+                return d
             })
             .catch(error => {
                 console.log(error)
             })
     }
 
-    _addMetricsToNewOpportunity = (d) => {
-        d.metric_values = JSON.parse(
+    _addMetricsToNewOpportunity = async (d) => {
+        d.metric_values = await JSON.parse(
             JSON.stringify(
                 this.state.metrics))
             .map(item => {
                 return {"metric": item, "value": this.state.new_value}
             })
-
+        return d
 
     }
 
     _saveDetail = () => {
 // better handling is needed
-
-
         //TODO Handle the creation of the saving of metrics via the opportunity metric endpoints.
 
 
@@ -180,8 +213,8 @@ class OpportunityDetail extends Component {
         console.log(data)
     }
 
-    _selectDetail = (event, id) => {
-        axios({
+    _selectDetail = async (id) => {
+        await axios({
             method: "get",
             url: `${hostUri}/opportunities/${id}`,
             responseType: "application/json",
@@ -198,30 +231,57 @@ class OpportunityDetail extends Component {
 
     }
 
+    async componentWillMount() {
+       await this._getFatalAttributes()
+       //  await this._getMetrics()
+    }
+    async componentDidMount(){
+       const {detail_id} = this.props
+        if (detail_id === 'new') {
+            await this._newOpp()
+        } else if (!_.isEmpty(detail_id)) {
+            await this._selectDetail(detail_id)
+        } else {
+            this._newOpp()
+        }
+    }
+
+    componentWillUnmount() {
+        const {setDetail} = this.props
+        setDetail(null)
+    }
 
     render() {
         const {classes, theme} = this.props;
+        const {fatal_attributes} = this.state
         return (
             //TODO Add tabs for metrics and Fatal Attributes
             <div>
                 <Button variant="fab" color="default" aria-label="add" onClick={this._saveDetail}>
                     {<SaveIcon/>}
                 </Button>
-                    <Grid container spacing={24}>
-                        <Grid item xs={12}>
-                            <div>Opportunity</div>
-                            <Model detail={this.state.detail} dir={theme.direction}/>
+                <Grid container spacing={24}>
+                    <Grid item xs={12}>
+                        <div>Opportunity</div>
+                        <Model handleChange = {this._handleChange}  detail={this.state.detail} dir={theme.direction}/>
 
-                            <div>Metrics</div>
-                            <Metrics detail={this.state.detail} dir={theme.direction}/>
-                            <div>Fatal Attributes</div>
-                            <FatalAttributes detail={this.state.detail} fatal_attributes={[]} dir={theme.direction}/>
-                        </Grid>
+                        <div>Metrics</div>
+                        <Metrics handleChange = {this._handleChange} detail={this.state.detail} dir={theme.direction}/>
+                        <div>Fatal Attributes</div>
+                        <FatalAttributes handleChange = {this._handleChange}  detail={this.state.detail} {...this.state} fatal_attributes={fatal_attributes}/>
+
                     </Grid>
+                </Grid>
 
             </div>
         )
     }
 }
 
-export default withStyles(styles, {withTheme: true})(OpportunityDetail)
+const mapStateToProps = state => {
+    return {
+        detail_id: state.opportunities.detail_id
+    }
+}
+export default connect(mapStateToProps, {setDetail})(withStyles(styles, {withTheme: true})(OpportunityDetail))
+
