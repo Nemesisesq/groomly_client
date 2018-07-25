@@ -196,7 +196,8 @@ class OpportunityDetail extends Component {
                 case "metric":
                     value = [...prevState.detail.metrics, value];
                     break;
-                case "fatal_attribute":
+                case "fatal_attributes":
+                    debugger
                     value = [...(prevState.detail.fatal_attributes || []), value];
                     break;
                 default:
