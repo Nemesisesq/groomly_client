@@ -15,6 +15,7 @@ import Grid from "@material-ui/core/Grid";
 import {connect} from "react-redux";
 import {setDetail} from "../ducks/ducks.opportunity";
 import _ from 'lodash'
+import {withRouter} from "react-router";
 
 
 //TODO List current metrics that are associated with the opportunity. Needs to be tested
@@ -170,6 +171,9 @@ class OpportunityDetail extends Component {
         }
 
 
+        const { match, location, history, setDetail } = this.props
+        history.push('/opportunities')
+
     }
 
     _handleChange = (key, data, index) => {
@@ -283,5 +287,5 @@ const mapStateToProps = state => {
         detail_id: state.opportunities.detail_id
     }
 }
-export default connect(mapStateToProps, {setDetail})(withStyles(styles, {withTheme: true})(OpportunityDetail))
+export default withRouter(connect(mapStateToProps, {setDetail})(withStyles(styles, {withTheme: true})(OpportunityDetail)))
 
