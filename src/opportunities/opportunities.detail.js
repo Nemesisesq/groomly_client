@@ -123,6 +123,7 @@ class OpportunityDetail extends Component {
     _saveDetail = () => {
 // better handling is needed
         //TODO Handle the creation of the saving of metrics via the opportunity metric endpoints.
+        const { match, location, history, setDetail } = this.props
 
 
         if (!this.state.editing) {
@@ -144,6 +145,8 @@ class OpportunityDetail extends Component {
                     this.setState({
                         editing: false
                     })
+                    history.push('/opportunities')
+
 
                 })
                 .catch(error => {
@@ -163,6 +166,8 @@ class OpportunityDetail extends Component {
                     this.setState({
                         editing: false
                     })
+                    history.push('/opportunities')
+
                 })
                 .catch(error => {
                     console.log(error)
@@ -171,8 +176,6 @@ class OpportunityDetail extends Component {
         }
 
 
-        const { match, location, history, setDetail } = this.props
-        history.push('/opportunities')
 
     }
 
