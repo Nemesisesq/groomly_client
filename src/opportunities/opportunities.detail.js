@@ -124,24 +124,18 @@ class OpportunityDetail extends Component {
 // better handling is needed
         //TODO Handle the creation of the saving of metrics via the opportunity metric endpoints.
         const { match, location, history, setDetail } = this.props
+debugger
 
 
-        if (!this.state.editing) {
-            this.setState({
-                editing: true
-            });
-            return
-        }
-
+        let data1 = this.state.detail;
         if (this.state.updating) {
             axios({
                 method: "put",
-                url: `${hostUri}/opportunities/${this.state.detail.id}`,
+                url: `${hostUri}/opportunities/${data1.id}`,
                 responseType: "application/json",
-                data: this.state.detail
+                data: data1
             })
                 .then(data => {
-                    this._getOpportunities()
                     this.setState({
                         editing: false
                     })
@@ -159,10 +153,9 @@ class OpportunityDetail extends Component {
                 method: "post",
                 url: `${hostUri}/opportunities`,
                 responseType: "application/json",
-                data: this.state.detail
+                data: data1
             })
                 .then(data => {
-                    this._getOpportunities()
                     this.setState({
                         editing: false
                     })
